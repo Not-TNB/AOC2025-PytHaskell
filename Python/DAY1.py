@@ -11,15 +11,17 @@ with open('External_Files/dials.txt') as f:
         s = acc
         if d[0] == 'R':
             acc = (acc + step) % 100
-            cyc = (acc < s)
-        else:
+            cyc = acc < s
+        else: # d[0] == 'L'
             acc = (acc - step) % 100
-            cyc = (acc > s) 
+            cyc = acc > s
         
         if acc == 0:
             pt1 += 1
             pt2 += 1
-        elif (cyc and s!=0): 
+        elif (cyc and s != 0): 
             pt2 += 1
 
+# PART 1: 989 
+# PART 2: 5941
 print(pt1, pt2)
