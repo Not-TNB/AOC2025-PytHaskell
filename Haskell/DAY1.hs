@@ -6,10 +6,25 @@ main :: IO()
 main = do
     file <- readFile "External_Files/dials.txt"
     let file' = lines file
-    print $ "PART 1: " ++ show (evalState (password1 file') (0,50)) -- 989
-    print $ "PART 2: " ++ show (evalState (password2 file') (0,50)) -- 5949
+    print $ evalState (password file') (0,0,50) -- (989,5949)
 
---              pwd pos
+--              pw1 pw2 pos
+type PWState = (Int,Int,Int)
+
+drns :: Map.Map Char Int
+drns = Map.fromList [('L', -1), ('R', 1)]
+
+password :: [String] -> State PWState (Int,Int)
+password [] = gets (\(p1,p2,_) -> (p1,p2))
+password ((d:s):ls) = do
+    (p1,p2,pos) <- get
+    let (q,r) = (pos + (drns ! d) * read s) `divMod` 100 
+    let p1' = p1 + fromEnum (r == 0)
+    let p2' = p2 + abs q
+    put (p1', p2', r)
+    password ls
+
+{-
 type PWState = (Int,Int)
 
 drns :: Map.Map Char Int
@@ -32,3 +47,4 @@ password2 ((d:s):ls) = do
     let pwd' = pwd + abs q
     put (pwd', r)
     password2 ls
+-}
