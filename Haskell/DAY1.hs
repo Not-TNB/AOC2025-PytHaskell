@@ -28,7 +28,7 @@ password2 :: [String] -> State PWState Int
 password2 [] = gets fst
 password2 ((d:s):ls) = do
     (pwd, pos) <- get
-    let pos' = pos + (drns ! d) * read s
-    let pwd' = pwd + abs (pos' `div` 100)
-    put (pwd', pos' `mod` 100)
+    let (q,r) = (pos + (drns ! d) * read s) `divMod` 100
+    let pwd' = pwd + abs q
+    put (pwd', r)
     password2 ls
