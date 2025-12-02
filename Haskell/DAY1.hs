@@ -1,10 +1,12 @@
+module DAY1 where
+
 import qualified Data.Map as Map
-import Data.Map ((!), Map)
+import Data.Map ((!))
 import Control.Monad.State
 
 main :: IO()
 main = do
-    file <- readFile "External_Files/dials.txt"
+    file <- readFile "../External_Files/dials.txt"
     let file' = lines file
     print $ evalState (password file') (0,0,50) -- (989,5949)
 
