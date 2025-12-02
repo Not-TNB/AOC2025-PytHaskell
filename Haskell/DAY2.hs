@@ -13,7 +13,10 @@ pattern1 = "^(\\d+)\\1$"
 pattern2 = "^(\\d+)\\1+$"
 
 checkRanges :: [String] -> (Int,Int)
-checkRanges = foldr ((\(x1,y1) (x2,y2) -> (x1+x2,y1+y2)) . checkRange) (0,0)
+checkRanges = foldr ((<++>) . checkRange) (0,0)
+
+(<++>) :: (Num a) => (a,a) -> (a,a) -> (a,a)
+(x,y) <++> (z,w) = (x+z,y+w)
 
 checkRange :: String -> (Int,Int)
 checkRange str = (count pattern1, count pattern2)
