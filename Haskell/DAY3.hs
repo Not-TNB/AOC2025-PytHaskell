@@ -1,0 +1,25 @@
+module DAY3 where
+
+import Control.Monad.State
+import Data.Char (digitToInt)
+
+main :: IO()
+main = do
+    file <- readFile "../External_Files/day3.txt"
+    let banks = map (map digitToInt) $ lines file
+    print $ maxBanks 2 banks  -- PART 1: 17430
+    print $ maxBanks 12 banks -- PART 2: 171975854269367
+
+--                pt1  pt2
+type StkState = ([Int], Int)
+
+maxBanks :: Int -> [[Int]] -> Int
+maxBanks k = sum . map (\b -> combineDigits $ take k $ evalState (maxBank b) ([],length b - k))
+    where combineDigits = read . concatMap show
+
+maxBank :: [Int] -> State StkState [Int]
+maxBank [] = gets $ reverse . fst
+maxBank bank@(b:bs) = do
+    (stk,canPop) <- get
+    if null stk || canPop <= 0 || b <= head stk then put (b:stk, canPop) >> maxBank bs
+    else put (tail stk, canPop-1) >> maxBank bank
