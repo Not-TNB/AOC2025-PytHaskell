@@ -9,8 +9,7 @@ main = do
     let banks = map (map digitToInt) $ lines file
     print $ maxBanks 2 banks  -- PART 1: 17430
     print $ maxBanks 12 banks -- PART 2: 171975854269367
-
---                pt1  pt2
+    
 type StkState = ([Int], Int)
 
 maxBanks :: Int -> [[Int]] -> Int
