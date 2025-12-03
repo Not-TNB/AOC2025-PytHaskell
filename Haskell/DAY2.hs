@@ -5,7 +5,7 @@ import Text.Regex.PCRE
 
 main :: IO()
 main = do
-    file <- readFile "../External_Files/ids.txt"
+    file <- readFile "../External_Files/day2.txt"
     print $ checkRanges (splitOn "," file)
 
 pattern1, pattern2 :: String

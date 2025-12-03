@@ -6,7 +6,7 @@ import Control.Monad.State
 
 main :: IO()
 main = do
-    file <- readFile "../External_Files/dials.txt"
+    file <- readFile "../External_Files/day1.txt"
     let file' = lines file
     print $ evalState (password file') (0,0,50) -- (989,5949)
 

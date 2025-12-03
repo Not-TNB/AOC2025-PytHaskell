@@ -1,6 +1,6 @@
 import re
 
-with open('External_Files/ids.txt') as f:
+with open('External_Files/day2.txt') as f:
     ranges = f.read().split(',')
 f.close()
 
