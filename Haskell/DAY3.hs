@@ -22,7 +22,7 @@ maxBank :: [Int] -> State StkState [Int]
 maxBank [] = gets $ reverse . fst
 maxBank bank@(b:bs) = do
     (stk,canPop) <- get
-    let next = put(b:stk, canPop) >> maxBank bs in
+    let next = put (b:stk, canPop) >> maxBank bs in
         case stk of
             (d:ds) -> if canPop <= 0 || b <= d 
                     then next
