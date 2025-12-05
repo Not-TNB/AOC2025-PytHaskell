@@ -1,53 +1,36 @@
+{-# LANGUAGE TupleSections #-}
 module DAY4 where
+import Control.Monad.State
+import Data.Array
+import Utils
 
-import Data.List.Split
-
-main :: IO()
+main :: IO ()
 main = do
     file <- readFile "../External_Files/day4.txt"
-    let grid = splitOn "\n" file
-    print grid
-    print dirs
+    let (n,m,gridArr) = setupGrid file
+        initState = (0, gridArr)
+    print $ evalState (removePaperArray n m gridArr) initState
+    print $ evalState (part2Array       n m gridArr) initState
 
-dirs :: [(Int,Int)]
-dirs = liftA2 (,) [-1,0,1] [-1,0,1]
+type GridState = (Int, GridArray)  -- (total removed, current grid)
 
-type GridState = ([[Char]],Int)
+toRemoveIdxs :: Int -> Int -> GridArray -> [Int]
+toRemoveIdxs n m grid =
+    [ idx | i <- [0..n-1], j <- [0..m-1], let idx=i*m+j
+    , grid ! idx == '@', length [ () | (rr,cc) <- liftA2 (,) [i-1,i,i+1] [j-1,j,j+1]
+                       , rr >= 0 && rr < n && cc >= 0 && cc < m
+                       , grid ! (rr*m+cc) == '@'] <= 4 ]
 
+removePaperArray :: Int -> Int -> GridArray -> State GridState Int
+removePaperArray n m grid = do
+    (tot, _) <- get
+    let removeIdx = toRemoveIdxs n m grid
+        removed = length removeIdx
+    put (tot + removed, grid // map (, '.') removeIdx)
+    return removed
 
-
--- from copy import deepcopy
-
--- directions = [(-1,-1),(-1,0),(-1,1),(0,-1),(0,1),(1,-1),(1,0),(1,1)]
--- def removePaper(grid):
---     n = len(grid)
---     m = len(grid[0])
---     gridNew = deepcopy(grid)
---     total = 0
---     toRemove = []
---     for i,r in enumerate(grid):
---         for j,c in enumerate(r):
---             if c != '@': continue
---             count = 0
---             for dr, dc in directions:
---                 rr, cc = i + dr, j + dc
---                 if 0 <= rr < n and 0 <= cc < m and grid[rr][cc] == '@':
---                     count += 1
---             if count < 4:
---                 toRemove.append((i,j))
---                 total += 1
---     for (i,j) in toRemove: gridNew[i][j] = '.'
---     return total, gridNew
-
--- def part2(grid):
---     g = deepcopy(grid)
---     total = 0
---     while True:
---         removed, g = removePaper(g)
---         if removed == 0: break
---         total += removed
---     return total
-
--- pt1, _ = removePaper(grid)
--- pt2 = part2(grid)
--- print(pt1, pt2) # PART 1: 1491, PART 2: 8722
+part2Array :: Int -> Int -> GridArray -> State GridState Int
+part2Array n m grid = do
+    removed <- removePaperArray n m grid
+    if removed == 0 then get >>= \(tot, _)     -> return tot
+    else                 get >>= \(_, gridNew) -> part2Array n m gridNew
