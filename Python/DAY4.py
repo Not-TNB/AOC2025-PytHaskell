@@ -1,6 +1,6 @@
 from copy import deepcopy
 
-with open('/Users/tristanbasri/Desktop/Code/Python_3/dials.txt') as f:
+with open('External_Files/day4.txt') as f:
     grid = [list(line) for line in f.read().splitlines()]
 
 directions = [(-1,-1),(-1,0),(-1,1),(0,-1),(0,1),(1,-1),(1,0),(1,1)]
