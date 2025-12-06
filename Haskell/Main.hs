@@ -4,6 +4,7 @@ import DAY1
 import DAY2
 import DAY3
 import DAY4
+import DAY5
 
 main :: IO ()
 main = do
@@ -13,4 +14,5 @@ main = do
         "2" -> DAY2.main
         "3" -> DAY3.main
         "4" -> DAY4.main
+        "5" -> DAY5.main
         _   -> print "INVALID NUM -- PICK 1 TO 12 INCLUSIVE"

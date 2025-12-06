@@ -17,8 +17,7 @@ toRemoveIdxs grid = [pos | pos <- coords grid, grid!pos == '@' && ngbrs grid (==
 
 removePaperArray ::  GridArray -> State GridState Int
 removePaperArray grid = do
-    let removeList = toRemoveIdxs grid
-        removed    = length removeList
+    let removeList = toRemoveIdxs grid; removed = length removeList
     modify (\(tot,g) -> (tot + removed, g // map (,'.') removeList))
     return removed
 
