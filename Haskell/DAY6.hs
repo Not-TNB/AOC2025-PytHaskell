@@ -5,34 +5,31 @@ module DAY6 where
 import Data.List (transpose)
 import Data.Array
 import Utils
-import Data.Char (isSpace)
+import Control.Monad.State
+import Data.Maybe (mapMaybe)
+import Text.Read (readMaybe)
 
 main :: IO ()
 main = do
     file <- readFile "../External_Files/day6.txt"
-    let arr = setupGrid file
-    print $ part1 file
-    print $ part2 arr
+    print $ part1 file                                             -- PART 1: 5877594983578
+    print $ evalState (part2 $ cols $ setupGrid file) ('+',[],0) -- PART 2: 11159825706149
 
 part1 :: String -> Int
 part1 = sum . map (calculate . reverse) . transpose . map words . lines
-    where calculate ("+":nums) = sum (map read nums)
-          calculate ("*":nums) = product (map read nums)
+    where calculate ([op]:nums) = apply op (map read nums)
 
-part2 :: GridArray -> Int
-part2 arr = go initCol initOp 0 0
-    where
-        (_,(n,m)) = bounds arr
-        initCol@(_,_,initOp) = extract 0
-        extract :: Int -> (Int,Int,Char)
-        extract col
-            | all isSpace nums = (col,-1,' ')
-            | otherwise = (col, read nums, arr!(n,col))
-            where nums = map ((!) arr . (,col)) [0..n-1]
-        go :: (Int,Int,Char) -> Char -> Int -> Int -> Int
-        go (col,-1 ,_  ) op grp acc = go (extract (col+1)) op grp acc
-        go (col,num,' ') op grp acc 
-            | col == m  = acc + (num <+*> grp)
-            | otherwise = go (extract (col+1)) op (num <+*> grp) acc
-            where (<+*>) = if op=='+' then (+) else (*)
-        go (col,num,op) _ grp acc = go (extract (col+1)) op num (grp+acc)
+--                          op     grp    acc
+part2 :: [(Int,Char)] -> State (Char, [Int], Int) Int
+part2 [] = gets (\(op,grp,acc) -> acc + apply op grp)
+part2 ((num,curOp):cls) = do
+    (op,grp,acc) <- get
+    if curOp == ' ' then put (op, num:grp, acc) else put (curOp, [num], acc + apply op grp)
+    part2 cls
+
+apply :: Char -> ([Int] -> Int)
+apply op = if op == '+' then sum else product
+
+cols :: GridArray -> [(Int,Char)]
+cols arr = mapMaybe (\c -> let s = [arr!(r,c) | r <- [0..n-1]] in (,arr!(n,c)) <$> readMaybe s) [0..m]
+  where (_,(n,m)) = bounds arr
