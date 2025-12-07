@@ -13,35 +13,28 @@ def pt1(file):
 
 def pt2(file):
     lines = [line.rstrip("\n")[::-1] for line in file.splitlines()]
-    width = len(max(lines, key=len))
+    width = max(map(len,lines))
     lines = [line.ljust(width) for line in lines]
     opRow = lines[-1]
+
     def extract_column(col):
-        nums = []
-        acc = []
+        nums, acc = [], []
         for row in lines[:-1]:
-            c = row[col]
-            if c.isdigit(): acc.append(c)
+            if (c := row[col]).isdigit(): acc.append(c)
             elif acc:
-                nums.append(int("".join(acc)))
+                nums.append(int(''.join(acc)))
                 acc = []
-        if acc: nums.append(int("".join(acc)))
+        if acc: nums.append(int(''.join(acc)))
         return nums
 
-    groups = []
-    curGrp = []
-    ops = []
-
+    groups, curGrp, ops = [], [], []
     for col in range(width):
-        if (colNums := extract_column(col)): curGrp.append(colNums)
-        if opRow[col].strip():
-            ops.append(opRow[col])
+        if (colNums := extract_column(col)): curGrp += colNums
+        if (op := opRow[col]).strip():
+            ops.append(op)
             if curGrp: groups.append(curGrp)
             curGrp = []
-    flat_groups = [[n for col in group for n in col] for group in groups]
-    result = list(zip(ops, flat_groups))
-    return sum(sum(nums) if op == '+' else prod(nums) for op, nums in result)
-
+    return sum(sum(nums) if op == '+' else prod(nums) for op, nums in zip(ops, groups))
 
 print(pt1(file)) # PART 1: 5877594983578
 print(pt2(file)) # PART 2: 11159825706149

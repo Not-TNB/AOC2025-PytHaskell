@@ -28,4 +28,4 @@ def simulate(manifold):
         beams = new
     return split, paths
 
-print(simulate(grid)) # PART 1: 1658, PART 2: 53916299384254s
+print(simulate(grid)) # PART 1: 1658, PART 2: 53916299384254
