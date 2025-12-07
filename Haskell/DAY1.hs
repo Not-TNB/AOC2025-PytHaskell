@@ -1,3 +1,4 @@
+{-# OPTIONS_GHC -Wno-incomplete-patterns #-}
 module DAY1 where
 
 import qualified Data.Map as Map

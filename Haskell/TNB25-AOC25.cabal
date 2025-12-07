@@ -58,7 +58,8 @@ executable TNB25-AOC25
     main-is:          Main.hs
 
     -- Modules included in this executable, other than Main.
-    other-modules:    Utils, DAY1, DAY2, DAY3, DAY4, DAY5
+    other-modules:    Utils, DAY1, DAY2, DAY3, DAY4, DAY5, DAY6,
+                             DAY7
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:
 

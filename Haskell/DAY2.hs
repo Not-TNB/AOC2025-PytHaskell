@@ -1,3 +1,4 @@
+{-# OPTIONS_GHC -Wno-incomplete-patterns #-}
 module DAY2 where
 
 import Data.List.Split (splitOn)
