@@ -1,5 +1,5 @@
 with open('External_Files/day3.txt') as f:
-    banks = f.read().split('\n')
+    banks = f.read().splitlines()
 f.close()
 
 def maxBank(bank, k):

@@ -7,7 +7,7 @@ with open('/Users/tristanbasri/Desktop/Code/Python_3/dials.txt') as f:
 f.close()
 
 def findTop3(boxes, k=-2) -> int:
-    edges = sorted(map(lambda p: (dist(*p), p), combinations(boxes, 2)), key=lambda x: x[0])
+    edges = sorted(map(lambda p: (dist(*p),p), combinations(boxes,2)), key=lambda x: x[0])
     dsu = DSU(boxes)
     for _,ab in edges[:k]: 
         if dsu.union(ab): last = ab
