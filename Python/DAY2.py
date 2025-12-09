@@ -2,7 +2,6 @@ import re
 
 with open('External_Files/day2.txt') as f:
     ranges = f.read().split(',')
-f.close()
 
 # alternative (easier imo) regex solution
 pattern1 = re.compile(r'^(\d+)\1$')

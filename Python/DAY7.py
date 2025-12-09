@@ -3,7 +3,6 @@ from typing import Set, Tuple
 
 with open('External_Files/day7.txt') as f:
     grid = f.read().splitlines()
-f.close()
 
 def simulate(manifold):
     h, w = len(manifold), len(manifold[0])

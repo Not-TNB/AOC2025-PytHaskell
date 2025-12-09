@@ -1,6 +1,5 @@
 with open('External_Files/day3.txt') as f:
     banks = f.read().splitlines()
-f.close()
 
 def maxBank(bank, k):
     canPop = len(bank) - k

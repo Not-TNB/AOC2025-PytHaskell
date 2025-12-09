@@ -7,7 +7,6 @@ with open('External_Files/day1.txt') as f:
         acc += int(d[1:]) * (1 if d[0] == 'R' else -1)
         pt2 += abs(acc//100)
         if (acc:=acc%100) == 0: pt1 += 1   
-f.close()
         
 # PART 1: 989 
 # PART 2: 5941

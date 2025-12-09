@@ -3,7 +3,6 @@ from operator import mul
 
 with open('External_Files/day6.txt') as f:
     file = f.read()
-f.close()
 
 def prod(ls): return reduce(mul, ls, 1)
 

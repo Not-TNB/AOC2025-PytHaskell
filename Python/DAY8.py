@@ -4,7 +4,6 @@ from itertools import combinations
 
 with open('External_Files/day8.txt') as f:
     boxes = [tuple(map(int, line.split(','))) for line in f.read().splitlines()]
-f.close()
 
 def findTop3(boxes, k=-2) -> int:
     edges = sorted(map(lambda p: (dist(*p),p), combinations(boxes,2)), key=lambda x: x[0])

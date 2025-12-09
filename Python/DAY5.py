@@ -1,6 +1,5 @@
 with open('External_Files/day5.txt') as f:
     lines = f.read().splitlines()
-f.close()
 
 ranges = []
 while True:
