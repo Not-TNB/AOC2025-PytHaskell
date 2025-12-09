@@ -1,4 +1,3 @@
-{-# LANGUAGE TupleSections #-}
 module DAY7 where
 
 import Control.Monad

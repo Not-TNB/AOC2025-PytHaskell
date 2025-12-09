@@ -2,7 +2,7 @@ from collections import defaultdict
 from math import dist, prod
 from itertools import combinations
 
-with open('/Users/tristanbasri/Desktop/Code/Python_3/dials.txt') as f:
+with open('External_Files/day8.txt') as f:
     boxes = [tuple(map(int, line.split(','))) for line in f.read().splitlines()]
 f.close()
 
@@ -17,11 +17,9 @@ def findTop3(boxes, k=-2) -> int:
     return prod(sorted(circuitSize.values(), reverse=True)[:3])
 
 class DSU:
-    def __init__(self, pts):
-        self.parent, self.size = {p: p for p in pts}, {p: 1 for p in pts}
+    def __init__(self, pts): self.parent, self.size = {p: p for p in pts}, {p: 1 for p in pts}
     def find(self, x):
-        while self.parent[x] != x:
-            self.parent[x], x = self.parent[self.parent[x]], self.parent[x]
+        while self.parent[x] != x: self.parent[x], x = self.parent[self.parent[x]], self.parent[x]
         return x
     def union(self, ab):
         ra, rb = self.find(ab[0]), self.find(ab[1])
